@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Online Quiz Platform</title>
+    <style>
+        /* Add your CSS styles here for a user-friendly interface */
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to the Online Quiz Platform</h1>
+
+    <!-- User Authentication -->
+    <!-- User Authentication -->
+    <div id="authentication">
+        <button onclick="showLoginForm()">Login</button>
+        <button onclick="showRegistrationForm()">Register</button>
+    </div>
+
+    <!-- Login Form (initially hidden) -->
+    <div id="loginForm" style="display: none;">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="loginUser()">Submit</button>
+    </div>
+
+    <!-- Registration Form (initially hidden) -->
+    <div id="registrationForm" style="display: none;">
+        <h2>Register</h2>
+        <input type="text" id="registerUsername" placeholder="Username">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <button onclick="registerUser()">Submit</button>
+    </div>
+
+
+
+    <script>
+        // JavaScript code for quiz functionality
+        // You would need to implement question loading, scoring, and other functions here
+
+        // Sample questions - You should load questions from a database or API.
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris"],
+                correctAnswer: "Paris",
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Venus"],
+                correctAnswer: "Mars",
+            },
+            // Add more questions here
+        ];
+
+        let currentQuestionIndex = 0;
+        let userScore = 0;
+
+        function loadQuestion() {
+            const questionContainer = document.getElementById("questions");
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (currentQuestionIndex < questions.length) {
+                questionContainer.innerHTML = `
+    <h3>${currentQuestion.question}</h3>
+    <ul>
+      ${currentQuestion.options.map((option) => <li onclick="checkAnswer('${option}')">${option}</li>).join('')}
+    </ul>
+  `;
+            } else {
+                showResults();
+            }
+        }
+
+        function checkAnswer(userAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (userAnswer === currentQuestion.correctAnswer) {
+                userScore++;
+            }
+
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            const quizContainer = document.getElementById("quiz");
+            const resultsContainer = document.getElementById("results");
+            const scoreElement = document.getElementById("score");
+
+            quizContainer.style.display = "none";
+            resultsContainer.style.display = "block";
+            scoreElement.textContent = userScore;
+        }
+
+        function returnToQuiz() {
+            const quizContainer = document.getElementById("quiz");
+            const resultsContainer = document.getElementById("results");
+
+            currentQuestionIndex = 0;
+            userScore = 0;
+
+            quizContainer.style.display = "block";
+            resultsContainer.style.display = "none";
+
+            loadQuestion();
+        }
+
+        // Initial setup
+        loadQuestion();
+
+    </script>
+    <script>
+        // User data (for demonstration purposes)
+        const users = [
+            { username: "user1", password: "password1" },
+            { username: "user2", password: "password2" },
+            // Add more user data here
+        ];
+
+        let currentUser = null; // Store the current user (if logged in)
+
+        function showLoginForm() {
+            document.getElementById("authentication").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+            document.getElementById("registrationForm").style.display = "none";
+        }
+
+        function showRegistrationForm() {
+            document.getElementById("authentication").style.display = "none";
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("registrationForm").style.display = "block";
+        }
+
+        function loginUser() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+            const re = document.getElementById("quize");
+            // Check if user credentials are valid (in a real project, this would be done on the server)
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = user;
+                alert("Login successful!");
+                // Handle the logged-in state, e.g., redirect to the quiz page
+                window.location.href = "quize.html"
+                //    re.style.display="block"
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
+        }
+
+        function registerUser() {
+            const username = document.getElementById("registerUsername").value;
+            const password = document.getElementById("registerPassword").value;
+
+            // Check if the username is already taken (in a real project, this would be done on the server)
+            if (users.find(u => u.username === username)) {
+                alert("Username already exists. Please choose a different one.");
+            } else {
+                // Add the new user (in a real project, this would be done on the server)
+                users.push({ username, password });
+                alert("Registration successful! You can now login.");
+                // Clear the registration form or switch to the login form
+                document.getElementById("registerUsername").value = "";
+                document.getElementById("registerPassword").value = "";
+                showLoginForm();
+            }
+        }
+
+    </script>
+</body>
+
+</html>

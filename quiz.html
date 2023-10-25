@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Quiz Interface -->
+    <div id="quiz">
+        <h2>Quiz Title</h2>
+        <div id="questions">
+            <!-- Questions will be populated here -->
+        </div>
+        <button onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <!-- Quiz Results -->
+    <div id="results">
+        <h2>Your Quiz Results</h2>
+        <p>Score: <span id="score">0</span></p>
+        <button onclick="showLeaderboard()">View Leaderboard</button>
+    </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard">
+        <h2>Leaderboard</h2>
+        <ol>
+            <!-- Leaderboard entries will be populated here -->
+        </ol>
+        <button onclick="returnToQuiz()">Back to Quiz</button>
+    </div>
+    <script>
+        
+        // JavaScript code for quiz functionality
+        // You would need to implement question loading, scoring, and other functions here
+
+        // Sample questions - You should load questions from a database or API.
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris"],
+                correctAnswer: "Paris",
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Venus"],
+                correctAnswer: "Mars",
+            },
+            // Add more questions here
+        ];
+
+        let currentQuestionIndex = 0;
+        let userScore = 0;
+
+        function loadQuestion() {
+            const questionContainer = document.getElementById("questions");
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (currentQuestionIndex < questions.length) {
+                questionContainer.innerHTML = `
+    <h3>${currentQuestion.question}</h3>
+    <ul>
+      ${currentQuestion.options.map((option) => <li onclick="checkAnswer('${option}')">${option}</li>).join('')}
+    </ul>
+  `;
+            } else {
+                showResults();
+            }
+        }
+
+        function checkAnswer(userAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (userAnswer === currentQuestion.correctAnswer) {
+                userScore++;
+            }
+
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            const quizContainer = document.getElementById("quiz");
+            const resultsContainer = document.getElementById("results");
+            const scoreElement = document.getElementById("score");
+
+          quizContainer.style.display = "none";
+          resultsContainer.style.display = "block";
+          scoreElement.textContent = userScore;
+}
+
+function returnToQuiz() {
+const quizContainer = document.getElementById("quiz");
+const resultsContainer = document.getElementById("results");
+
+currentQuestionIndex = 0;
+userScore = 0;
+
+quizContainer.style.display = "block";
+resultsContainer.style.display = "none";
+
+loadQuestion();
+}
+
+// Initial setup
+loadQuestion();
+
+</script>
+
+</body>
+
+</html>
